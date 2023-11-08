@@ -41,7 +41,7 @@ const Navbar = () => {
     },[]);
 
     return ( 
-        <nav  className={`${show === true ? `bg-white` : `bg-transparent`} transition-all duration-700 fixed flex items-center justify-between w-full p-2 sm:px-6 sm:py-3 z-[10]`}>
+        <nav className={`${show === true ? `bg-white` : `bg-transparent`} transition-all duration-700 fixed flex items-center justify-between w-full p-2 sm:px-6 sm:py-3 z-[2]`}>
             {loading && <Loading params="Logging Out" />}
             <div className="flex gap-4 lg:gap-10">
                 <a href="/home"><img className="w-[150px] cursor-pointer md:w-[200px]" src="/logo.png" alt="logo" /></a>

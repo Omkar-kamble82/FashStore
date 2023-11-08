@@ -7,6 +7,7 @@ import { textVariant, buttonVariant ,buttonrightVariant } from "../data/motion";
 const Homebanner = () => {
     return ( 
         <div className='h-[100vh] w-[100vw] overflow-hidden relative'>
+            <div className="absolute h-[50vh] bg-[transparent] w-full z-[1]" />
             <Carousel
                 showThumbs={false}
                 autoPlay
@@ -25,7 +26,7 @@ const Homebanner = () => {
                         >
                             <motion.h1 variants={buttonVariant(1.6)} className="text-xl font-light sm:text-3xl py-1">{slide.semiheading}</motion.h1>
                             <motion.p variants={textVariant(1.2)} className={`font font-extrabold text-[45px] sm:text-[70px] lg:text-[75px]`}>{slide.heading}</motion.p>
-                            <a href="/shop"><motion.button variants={buttonrightVariant(1.6)} className="py-3 px-6 rounded-full mt-2 font-semibold text-[#f1f1f1] bg-[#e7ab3c] hover:opacity-70 cursor-pointer transition-all duration-700">{slide.button}</motion.button></a>
+                            <a href="/shop" className=""><motion.button variants={buttonrightVariant(1.6)} className="py-3 px-6 rounded-full mt-2 font-semibold text-[#f1f1f1] bg-[#e7ab3c] hover:opacity-70 cursor-pointer transition-all duration-700">{slide.button}</motion.button></a>
                         </motion.div>
                     </div>
                 ))}
