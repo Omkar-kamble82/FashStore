@@ -46,7 +46,6 @@ const Shop = () => {
                                 )
                             })}
                         </AnimatePresence>
-                        {/* {model && <Product onClose={() => setModel(false)} dataitem={data}/>} */}
                     </div>
                 </div>
             <Footer />

@@ -55,7 +55,6 @@ const Navbar = () => {
             <div className="flex items-center gap-1 sm:gap-4">
                 <a href="/cart"><div className="relative flex w-[50px] h-[50px]">
                     <img width={30} height={30} src="/Navbar/cart.svg" className="cursor-pointer" alt="left_arrow"/>
-                    <div className="px-[4px] rounded-full text-sm top-1 right-3 bg-rose-600 absolute text-white">0</div>
                 </div></a>
                 <button onClick={() => Logout()} className="py-3 px-6 rounded-full font-semibold text-[#fff] bg-[#e7ab3c] hover:opacity-70 cursor-pointer transition-all duration-700 hidden md:block">Logout</button>
                 <div className="block md:hidden"><Sidebar /></div>

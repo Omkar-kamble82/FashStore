@@ -4,6 +4,8 @@ import Categories from "./Categories";
 import Homeproduct from "./Homeproduct";
 import { Womendata, MenData, AccessoriesData } from "../data/constant";
 import Footer from "../components/Footer";
+// import { useEffect } from "react";
+
 
 const Home = () => {
 

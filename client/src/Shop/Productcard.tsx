@@ -9,7 +9,6 @@ type dataobj = {
 const Productcard = (data: dataobj) => {
 
     const [btn, setbtn] = useState(false)
-
     const navigate = useNavigate()
 
     return ( 

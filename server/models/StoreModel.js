@@ -13,6 +13,9 @@ const storeSchema = new Schema({
     },
     cart: {
         type: [],
+    },
+    ids: {
+        type: []
     }
 }, { timestamps: true })
 

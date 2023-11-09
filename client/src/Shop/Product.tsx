@@ -1,20 +1,50 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import toast from "react-hot-toast";
+import { useUser } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { storeData } from "../data/constant";
 import Navbar from "../components/Navbar";
 import Loading from "../components/Loading";
+import { Addtocart } from "../functions/functions";
 
 const Product = () => {
 
     const { id } = useParams()
+    const { user } = useUser()
+    const navigate = useNavigate()
+
     const [loading, setLoading] = useState(false)
     const [mainimg, setMainimg] = useState("")
     const [name, setName] = useState("")
     const [imgarr, setImgarr] = useState<string[]>()
     const [price, setPrice] = useState(0)
     const [noproduct, setNoproduct] = useState(false)
+    const [quantity, setQuantity] = useState(1)
+    const [size, setSize] = useState("")
+    const [error, setError] = useState(false)
+    const [exist, setExist] = useState(false)
+
+    const get = async() => {
+        setLoading(true)
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_SERVER}${user?.fullName}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            const userobj = await response.json()
+            if(id) {
+                setExist(userobj.ids.includes(id))
+            }
+            setLoading(false)
+        } catch (err) {
+            toast.error("Something went wrong")
+        }
+    }
+
 
     useEffect(() => {
         setLoading(true)
@@ -24,13 +54,40 @@ const Product = () => {
             setImgarr(item[0].images)
             setName(item[0].name)
             setPrice(item[0].price)
+            get()
+            setLoading(false)
         } catch (e) {
             setNoproduct(true)
         } finally {
             setLoading(false)
         }
     }, [id])
+
+    const increment = () => {
+        if(quantity >= 3) {
+            setError(true)
+            return
+        }
+        setQuantity(quantity + 1)
+    }
+    const decrement = () => {
+        if(quantity <= 1) return
+        setError(false)
+        setQuantity(quantity - 1)
+    }
+
+    const addtocard = async () => {
+        if(quantity === 0 || size === "" || size === "Size 0" ){
+            toast.error("Choose size")
+            return
+        }
+        const cart = {username: user?.fullName, email: user?.emailAddresses[0].emailAddress, cart: {name, imgarr, price, quantity, size, id}, id: id}
+        await Addtocart(cart)
+        navigate("/cart")
+    }
     
+
+
     return ( 
         <div>
             {loading && <Loading params="Loading product"/>}
@@ -52,25 +109,26 @@ const Product = () => {
                             <p className="text-[20px] lg:text-[25px] mt-[15px] font text-[#e7ab3c]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo alias voluptas mollitia eligendi. Dignissimos, saepe dolores </p>
                             <div className="flex item-center gap-5 mt-[10px]">
                                 <span className="text-xl py-2 font-bold text-[#e7ab3c] font">Size: </span>
-                                <select className="outline-none bg-transparent border-[1px] border-[#e7ab3c] py-2 w-[190px] text-[#e7ab3c] px-4">
-                                    <option>Choose a size</option>
-                                    <option>Size S</option>
-                                    <option>Size M</option>
-                                    <option>Size L</option>
-                                    <option>Size XL</option>
+                                <select onChange={(e) => setSize(e.target.value)} className="outline-none bg-transparent border-[1px] border-[#e7ab3c] py-2 w-[190px] text-[#e7ab3c] px-4">
+                                    <option value={"Size 0"}>Choose a size</option>
+                                    <option value={"Size S"}>Size S</option>
+                                    <option value={"Size M"}>Size M</option>
+                                    <option value={"Size L"}>Size L</option>
+                                    <option value={"Size XL"}>Size XL</option>
                                 </select>
                             </div>
                             <div className="my-[20px]">
                                 <div className="flex items-center gap-3">
                                     <span className="text-xl py-2 font-bold text-[#e7ab3c] font">Quantity: </span>
                                     <div className="flex items-center justify-start">
-                                        <img onClick={() => {}} className="h-[40px] cursor-pointer w-[40px] border-[1px] border-[#e7ab3c] p-2" width={30} height={30} src="/product/minus.svg" alt="minus_icon" />
-                                        <h1 className="h-[40px] w-[40px] border-t-[1px] border-b-[1px] text-xl font-bold text-[#e7ab3c] flex justify-center items-center border-[#e7ab3c]">{0}</h1>
-                                        <img onClick={() => {}} className="h-[40px] cursor-pointer w-[40px] border-[1px] border-[#e7ab3c] p-2" width={30} height={30} src="/product/add.svg" alt="add_icon" />
+                                        <img onClick={decrement} className="h-[40px] cursor-pointer w-[40px] border-[1px] border-[#e7ab3c] p-2" width={30} height={30} src="/product/minus.svg" alt="minus_icon" />
+                                        <h1 className="h-[40px] w-[40px] border-t-[1px] border-b-[1px] text-xl font-bold text-[#e7ab3c] flex justify-center items-center border-[#e7ab3c]">{quantity}</h1>
+                                        <img onClick={increment} className="h-[40px] cursor-pointer w-[40px] border-[1px] border-[#e7ab3c] p-2" width={30} height={30} src="/product/add.svg" alt="add_icon" />
                                     </div>
                                 </div>
                             </div>
-                            <button onClick={() => {}} className={`my-2 w-[160px] px-10 py-3 flex justify-center shadow-lg font-semibold text-sm text-white bg-[#e7ab3c] rounded-full focus:outline-none  hover:shadow-md z-10`}>Add to cart</button>
+                            {error && <span className="text-rose-600 text-[14px] mt-[2px]">*Max Limit reached</span>}
+                            {exist ? <button className={`my-2 w-[200px] px-10 py-3 flex justify-center shadow-lg font-semibold text-sm text-white bg-[#e7ab3c] rounded-full focus:outline-none  hover:shadow-md z-10`}>Remove from cart</button> :<button onClick={addtocard} className={`my-2 w-[160px] px-10 py-3 flex justify-center shadow-lg font-semibold text-sm text-white bg-[#e7ab3c] rounded-full focus:outline-none  hover:shadow-md z-10`}>Add to cart</button>}
                         </div>
                     </div>
                 ) : 

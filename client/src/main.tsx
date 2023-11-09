@@ -140,9 +140,9 @@ export const ClerkWithRoutes = () => {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Toaster />
-      <ClerkWithRoutes />
-    </BrowserRouter>
+      <BrowserRouter>
+        <Toaster />
+        <ClerkWithRoutes />
+      </BrowserRouter>
   </React.StrictMode>,
 )

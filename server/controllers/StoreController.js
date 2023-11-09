@@ -1,24 +1,46 @@
 const Store = require('../models/StoreModel')
-const mongoose = require('mongoose')
 
-export const addCart = async (req, res) => {
-    const user_email = req.email
-    const user_username = req.username
-    const cart = req.cart
+const addCart = async (req, res) => {
+    const {email, username, cart, id} = req.body
     try {
-        const user = await Store.findOne({username: user_username})
+        const user = await Store.findOne({ username: username })
         if(user) {
-            const user = await Store.findByIdAndUpdate({username: user_username}, {
-                $push: {
-                    following: id
+            const objid = user._id
+            const userStore0 = await Store.findByIdAndUpdate({ _id: objid }, {
+                    $push: {
+                        cart : cart
+                    },
+                    $push: {
+                        ids : id
+                    },
                 },
-            },
-            { new: true }
-        );
+                { new: true }
+            );
+            const userStore = await Store.findByIdAndUpdate({ _id: objid }, {
+                    $push: {
+                        cart : cart
+                    }
+                },
+                { new: true }
+            );
+            res.status(200).json(userStore)
+            return 
         }
+        const userStore = await Store.create({ email, username, cart: [cart] , ids: [id]})
+        res.status(200).json(userStore)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
+const getCart = async (req, res) => {
+    const { username } = req.params
+    try {
+        const user = await Store.findOne({ username: username})
         res.status(200).json(user)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
 }
 
+module.exports = { addCart, getCart}
