@@ -15,9 +15,16 @@ const allowedOrigins = [
 ]
 
 var corsOptions = {
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     optionsSuccessStatus: 200
 }    
+
 app.use(cors(corsOptions));
 
 app.use("/api/store", storeRoute);

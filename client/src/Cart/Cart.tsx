@@ -34,7 +34,6 @@ const Cart = () => {
         get()
     }, [])
     
-    console.log(cart)
     return ( 
         <div>
             <Navbar />
