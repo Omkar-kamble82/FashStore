@@ -13,7 +13,6 @@ const allowedOrigins = [
     process.env.CLIENT,
     process.env.LOCAL
 ]
-
 var corsOptions = {
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
