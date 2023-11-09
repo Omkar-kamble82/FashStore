@@ -22,7 +22,7 @@ const Shop = () => {
     return ( 
         <div>
             <Navbar />
-            <div className="pt-[120px] px-[15px] md:px-[10px]">
+            <div className="pt-[80px] px-[15px] md:px-[10px]">
                     <div className="py-[30px] px-[15px] md:px-[40px]">
                         <p className="pb-[20px] text-[22px] font-bold md:text-3xl">Select a category</p>
                         <span className="flex items-center flex-wrap gap-1 md:gap-4">
