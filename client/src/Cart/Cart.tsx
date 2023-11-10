@@ -90,6 +90,7 @@ const Cart = () => {
                 {
                     !empty ?
                     <>
+                        <p className="text-[50px] font font-bold text-[#e7ab3c] text-center">My cart</p>
                         <div className="flex min-w-[90%] flex-wrap sm:max-w-[80%] mx-auto justify-center items-center min-h-[80vh] gap-4">
                             {cart?.map((cart) => (
                                 <div key={cart.id} className="p-2 w-[90%] sm:w-[335px] border-2 rounded-xl flex flex-col justify-center">
@@ -105,7 +106,7 @@ const Cart = () => {
                                 </div>
                             ))}
                         </div> 
-                        <span className="flex justify-center mt-[30px]">
+                        <span className="flex justify-center mt-[15px]">
                             <button onClick={checkout} className={`my-2 w-[260px] px-10 py-3 flex justify-center shadow-lg font-semibold text-xl text-white bg-[#e7ab3c] rounded-full focus:outline-none  hover:shadow-md z-10`}>Checkout</button>
                         </span>
                         <Footer />
