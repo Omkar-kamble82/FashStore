@@ -15,7 +15,7 @@ const Product = () => {
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(false)
-    const [removeloading, setRemoveLoading] = useState(false)
+    const [updateloading, setUpdateLoading] = useState(false)
     const [mainimg, setMainimg] = useState("")
     const [name, setName] = useState("")
     const [imgarr, setImgarr] = useState<string[]>()
@@ -39,7 +39,6 @@ const Product = () => {
             if(id) {
                 setExist(userobj.ids.includes(id))
             }
-            setLoading(false)
         } catch (err) {
             toast.error("Something went wrong")
         }
@@ -69,6 +68,7 @@ const Product = () => {
         }
         setQuantity(quantity + 1)
     }
+
     const decrement = () => {
         if(quantity <= 1) return
         setError(false)
@@ -76,10 +76,6 @@ const Product = () => {
     }
 
     const addtocard = async () => {
-        if(quantity === 0 || size === "" || size === "Size 0" ){
-            toast.error("Choose size")
-            return
-        }
         const cart = {username: user?.fullName, email: user?.emailAddresses[0].emailAddress, cart: {name, imgarr, price, quantity, size, id}, id: id}
         try {
             const response = await fetch(`${import.meta.env.VITE_REACT_SERVER}addcart`, {
@@ -93,15 +89,14 @@ const Product = () => {
                 toast.error("Something went wrong")
                 return
             }
-            toast.success("Product added to cart successfully")
         } catch (err) {
             toast.error("Something went wrong")
         } 
         navigate("/cart")
     }
-    
+
     const remove = async () => {
-        setRemoveLoading(true)
+        setLoading(true)
         const cart = { id: id, username: user?.fullName }
         try {
             const response = await fetch(`${import.meta.env.VITE_REACT_SERVER}updatecart`, {
@@ -112,23 +107,34 @@ const Product = () => {
                 }
             })
             console.log(response)
-            setRemoveLoading(false)
-            navigate("/cart")
-            toast.success("Item deleted successfully")
         } catch (err) {
             toast.error("Something went wrong")
-        } finally {
-            setLoading(false)
         }
     }
 
+    const update = async () => {
+        if(quantity === 0 || size === "" || size === "Size 0" ){
+            toast.error("Choose size")
+            return
+        }
+        setUpdateLoading(true)
+        try {
+            await remove()
+            await addtocard()
+            toast.success("Item updated successfully") 
+            setUpdateLoading(false)
+        } catch (err) {
+            toast.error("Something went wrong")
+        }
+        
+    }
 
     return ( 
         <div>
             {loading && <Loading params="Loading product"/>}
-            {removeloading && <Loading params="Removing product"/>}
-            <Navbar showcart={false}/>
-            {!noproduct ? 
+            {updateloading && <Loading params="Updating product"/>}
+            <Navbar showcart={false} />
+            {(!noproduct && exist) ? 
                 (
                     <div className="flex min-h-[100vh] py-[100px] px-[15px] sm:py-[40px] lg:py-[80px] bg-[#f1f1f1] justify-center items-center flex-col md:flex-row gap-4">
                         <div className="flex flex-1 flex-col">
@@ -164,7 +170,8 @@ const Product = () => {
                                 </div>
                             </div>
                             {error && <span className="text-rose-600 text-[14px] mt-[2px]">*Max Limit reached</span>}
-                            {exist ? <button onClick={remove} className={`my-2 w-[200px] px-10 py-3 flex justify-center shadow-lg font-semibold text-sm text-white bg-[#e7ab3c] rounded-full focus:outline-none  hover:shadow-md z-10`}>Remove from cart</button> :<button onClick={addtocard} className={`my-2 w-[160px] px-10 py-3 flex justify-center shadow-lg font-semibold text-sm text-white bg-[#e7ab3c] rounded-full focus:outline-none  hover:shadow-md z-10`}>Add to cart</button>}
+                            <button onClick={update} className={`my-2 w-[230px] px-10 py-3 flex justify-center shadow-lg font-semibold text-sm text-white bg-[#e7ab3c] rounded-full focus:outline-none  hover:shadow-md z-10`}>Update from cart item</button>
+                            <span className="text-rose-600 text-[14px] mt-[2px]">*If not updated the cart item won't change!! <a href="/cart" className="underline text-gray-600 cursor-pointer font-bold">Return to cart</a></span>
                         </div>
                     </div>
                 ) : 

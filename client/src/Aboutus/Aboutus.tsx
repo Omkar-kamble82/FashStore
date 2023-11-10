@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 const Aboutus = () => {
     return ( 
         <div>
-            <Navbar />
+            <Navbar showcart={false}/>
             <div className="pt-[100px]">
                 <Topbanner image={"/about_banner.jpg"} title={"About Us"}/>
                 <div className="mt-[20px] px-4 md:px-8">

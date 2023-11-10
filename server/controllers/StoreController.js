@@ -43,4 +43,52 @@ const getCart = async (req, res) => {
     }
 }
 
-module.exports = { addCart, getCart}
+const removeItem = async (req, res) => {
+    const { id, username } = req.body
+    try {
+        const user0 = await Store.findOneAndUpdate({ username: username } ,
+            {
+                $pull: {
+                    cart: {
+                        id: id
+                    }
+                }
+            }
+        )
+        const user = await Store.findOneAndUpdate({ username: username } ,
+            {
+                $pull: {
+                    ids: id
+                }
+            }
+        )
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
+const emptyCart = async (req, res) => {
+    const { username } = req.body
+    try {
+        const user0 = await Store.findOneAndUpdate({ username: username } ,
+            {
+                $set: {
+                    cart: []
+                }
+            }
+        )
+        const user = await Store.findOneAndUpdate({ username: username } ,
+            {
+                $set: {
+                    ids: []
+                }
+            }
+        )
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
+module.exports = { addCart, getCart, removeItem, emptyCart}

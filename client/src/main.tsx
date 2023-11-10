@@ -11,6 +11,7 @@ import Aboutus from './Aboutus/Aboutus.tsx';
 import Cart from './Cart/Cart.tsx';
 import Contactus from './Contactus/Contactus.tsx';
 import Product from './Shop/Product.tsx';
+import UpdateProduct from './Shop/UpdateProduct.tsx'
 
 if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -124,6 +125,21 @@ export const ClerkWithRoutes = () => {
             <>
             <SignedIn>
               <Product />
+            </SignedIn>
+            <SignedOut>
+              <div className='flex h-[100vh] w-full justify-center items-center'>
+                <App />
+              </div>
+            </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/product/update/:id"
+          element={
+            <>
+            <SignedIn>
+              <UpdateProduct />
             </SignedIn>
             <SignedOut>
               <div className='flex h-[100vh] w-full justify-center items-center'>

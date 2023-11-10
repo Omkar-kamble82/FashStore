@@ -25,7 +25,7 @@ const Contactus = () => {
 
     return ( 
         <div>
-            <Navbar />
+            <Navbar showcart={false}/>
             <div className="pt-[100px]">
                 <Topbanner image={"/contact_banner.jpg"} title={"Contact Us"}/>
             </div>

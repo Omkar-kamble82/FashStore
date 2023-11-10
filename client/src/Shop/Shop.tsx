@@ -21,7 +21,7 @@ const Shop = () => {
 
     return ( 
         <div>
-            <Navbar />
+            <Navbar showcart={false}/>
             <div className="pt-[80px] px-[15px] md:px-[10px]">
                     <div className="py-[30px] px-[15px] md:px-[40px]">
                         <p className="pb-[20px] text-[22px] font-bold md:text-3xl">Select a category</p>
@@ -32,7 +32,6 @@ const Shop = () => {
                                 )
                             })}
                         </span>
-
                     </div>
                     <div className="flex mt-[10px] overflow-hidden justify-center items-center gap-4 gap-y-6 flex-wrap">
                         <AnimatePresence>

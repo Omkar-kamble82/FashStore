@@ -11,7 +11,7 @@ const Home = () => {
 
     return ( 
         <div className="overflow-x-hidden">
-            <Navbar />
+            <Navbar showcart={false}/>
             <Homebanner />
             <Categories />
             <Homeproduct dataitems={Womendata} heading={"Women's Clothing"} id={"Women"}/>
