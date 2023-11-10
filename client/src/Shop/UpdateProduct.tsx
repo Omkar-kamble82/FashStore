@@ -58,6 +58,7 @@ const Product = () => {
             console.log(myTimeout)
         } catch (e) {
             setNoproduct(true)
+            setLoading(false)
         }
     }, [id])
 

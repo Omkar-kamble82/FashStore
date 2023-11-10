@@ -42,6 +42,8 @@ const Product = () => {
             setLoading(false)
         } catch (err) {
             toast.error("Something went wrong")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -59,6 +61,7 @@ const Product = () => {
             console.log(myTimeout)
         } catch (e) {
             setNoproduct(true)
+            setLoading(false)
         }
     }, [id])
 
